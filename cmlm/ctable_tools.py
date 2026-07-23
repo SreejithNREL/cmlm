@@ -259,6 +259,7 @@ def convert_chemtable_units(ctable, conversion="mks2cgs"):
         "X": 1.0e2,  # m -> cm
         "VEL": 1.0e2,  # m s-1 -> cm s-1
         "CP": 1.0e4,  # J kg-1
+        "HRR": 1.0e1,  # erg/cm³/s
     }
 
     if conversion not in ["mks2cgs", "cgs2mks"]:

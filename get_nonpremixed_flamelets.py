@@ -106,6 +106,7 @@ def save_csv(flame, filename):
     #rxn_rates[0,:] = 0.0; rxn_rates[-1,:] = 0.0 # No rection at Z=0 or Z=1
     rxn_rates *= 1e-3 # MKS to CGS conversion
     savedata = savedata.assign(**dict(zip(['SRC_' + spec for spec in flame.gas.species_names], rxn_rates.T)))
+    savedata['HRR'] = flame.heat_release_rate * 10.0   #Adding heat release rate (HRR) as calculated by cantera
     savedata.to_csv(filename)
 
 # Convergence criteria for extinction

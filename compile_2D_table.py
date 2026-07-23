@@ -9,7 +9,7 @@ filepattern = 'autoignition/a*.csv'
 prog_definition = {"H2O":1, "CO2":1, "H2":1, "CO":1}
 keep_vars = ["RHO","T","DIFF","VISC","SRC_PROG",
              "Y-H2O","Y-H2","Y-CO","Y-CO2","Y-O2","Y-N2","Y-CH4","Y-OH",
-             "Y-CH2O","Y-HO2"]
+             "Y-CH2O","Y-HO2","HRR"]
 outfile = "autoignition.ctb"
 
 def compute_prog(data, prog_def, prefix='Y-', suffix=''):

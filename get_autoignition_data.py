@@ -77,6 +77,7 @@ for phi,press,temp in cond_iterator:
     rxn_rates[0,:] = rxn_rates[1,:] # overwrite 0th step (otherwise PROG basis will never ignite)
     rxn_rates *= 1e-3 # MKS to CGS conversion
     savedata = savedata.assign(**dict(zip(['SRC_' + spec for spec in states.species_names], rxn_rates.T)))
+    savedata['HRR'] = states.heat_release_rate * 10.0   #Adding heat release rate (HRR) as calculated by cantera
     print(np.max(np.diff(savedata['Y-CO2']+savedata['Y-CO']+savedata['Y-H2O']+savedata['Y-H2'])))
     print(np.max(np.diff(savedata['T'])))
     savedata.to_csv(os.path.join(outputdir, 'autoig_'+label+'.csv'))

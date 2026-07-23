@@ -10,7 +10,7 @@ prog_definition = {"H2O":1, "CO2":1, "H2":1, "CO":1}
 keep_vars = ["RHO","T","DIFF","VISC","SRC_PROG",
              "Y-H2O","Y-H2","Y-CO","Y-CO2","Y-O2","Y-N2","Y-CH4","Y-OH",
              "SRC_H2O","SRC_H2","SRC_CO","SRC_CO2","SRC_O2","SRC_N2","SRC_CH4","SRC_OH",
-             "Y-CH2O","Y-HO2","PROG","lnRHO","invRHO"]
+             "Y-CH2O","Y-HO2","PROG","lnRHO","invRHO","HRR"]
 # all SRCs added to use table for network training
 outfile = "nonpremixed.ctb"
 Zst = 0.0551538
@@ -50,7 +50,7 @@ for filename in files:
     # set source term to 0 for min and max Lambda
     if filename == files[0] or filename == files[-1]:
         for column in keep_vars:
-            if column.startswith('SRC'):
+            if column.startswith('SRC') or column=="HRR":
                 interpdata[column][filename] = 0.0
 
 Cgrid = np.linspace(0,Cmax,nC)

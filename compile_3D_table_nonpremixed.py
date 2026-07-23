@@ -17,7 +17,7 @@ prog_definition = {"H2O":1, "CO2":1, "H2":1, "CO":1}
 keep_vars = ["RHO","T","DIFF","VISC",
              "Y-H2O","Y-H2","Y-CO","Y-CO2","Y-O2","Y-N2","Y-CH4","Y-OH",
              "SRC_H2O","SRC_H2","SRC_CO","SRC_CO2","SRC_O2","SRC_N2","SRC_CH4","SRC_OH",
-             "Y-CH2O","Y-HO2"]
+             "Y-CH2O","Y-HO2","HRR"]
 outfile = "nonpremixed.ctb"
 Zst = 0.0551538
 
@@ -88,7 +88,7 @@ for ii in range(len(files))[rank::nprocs]:
     # Convolute with Beta PDF based on Z,Zvar
     # first get non-density-weighted variables ready for density-weighted PDF convolution
     for col in keep_cols:
-        if col.startswith("SRC_"):
+        if col.startswith("SRC_") or col=="HRR":
             data[col] = data[col] / data['RHO']
     data['RHO'] = 1.0/data['RHO']
     
@@ -137,6 +137,7 @@ for ii in range(len(files))[rank::nprocs]:
     
     # After convolution - restore non-density weighted variables
     interpdata[ii]['RHO'] = 1.0/interpdata[ii]['RHO']
+    interpdata[ii]['HRR'] = interpdata[ii]['HRR'] * interpdata[ii]['RHO']
     for col in keep_cols:
         if col.startswith("SRC_"):
             interpdata[ii][col] = interpdata[ii][col] * interpdata[ii]["RHO"]
@@ -144,7 +145,7 @@ for ii in range(len(files))[rank::nprocs]:
     # set source term to 0 for min and max Lambda
     if filename == files[0] or filename == files[-1]:
         for column in keep_cols:
-            if column.startswith('SRC'):
+            if column.startswith('SRC') or column=="HRR":
                 interpdata[ii][column] = 0.0
 
     tend = time.time() - tstart - tread - tconv
